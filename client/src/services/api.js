@@ -1,18 +1,18 @@
-// api.js - API service for making requests to the backend
-
 import axios from 'axios';
 
-// Create axios instance with base URL
+// Create axios instance with default config
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add request interceptor for authentication
+// Request Interceptor - Add auth token, loading states
 api.interceptors.request.use(
   (config) => {
+    // Add auth token if available
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,113 +24,83 @@ api.interceptors.request.use(
   }
 );
 
-// Add response interceptor for error handling
+// Response Interceptor - Handle errors globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle authentication errors
-    if (error.response && error.response.status === 401) {
+    // Handle 401 Unauthorized
+    if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
       window.location.href = '/login';
     }
+    
+    // Handle 404 Not Found
+    if (error.response?.status === 404) {
+      console.error('Resource not found:', error.response.data);
+    }
+    
     return Promise.reject(error);
   }
 );
 
-// Post API services
-export const postService = {
-  // Get all posts with optional pagination and filters
-  getAllPosts: async (page = 1, limit = 10, category = null) => {
-    let url = `/posts?page=${page}&limit=${limit}`;
-    if (category) {
-      url += `&category=${category}`;
-    }
-    const response = await api.get(url);
+// Posts API Methods
+export const postsApi = {
+  // Get all posts with pagination
+  getAll: async (params = {}) => {
+    const { page = 1, limit = 10, search = '' } = params;
+    const response = await api.get('/posts', { 
+      params: { page, limit, ...(search && { search }) } 
+    });
     return response.data;
   },
 
-  // Get a single post by ID or slug
-  getPost: async (idOrSlug) => {
-    const response = await api.get(`/posts/${idOrSlug}`);
+  // Get single post
+  getById: async (id) => {
+    const response = await api.get(`/posts/${id}`);
     return response.data;
   },
 
-  // Create a new post
-  createPost: async (postData) => {
+  // Create new post
+  create: async (postData) => {
     const response = await api.post('/posts', postData);
     return response.data;
   },
 
-  // Update an existing post
-  updatePost: async (id, postData) => {
+  // Update post
+  update: async (id, postData) => {
     const response = await api.put(`/posts/${id}`, postData);
     return response.data;
   },
 
-  // Delete a post
-  deletePost: async (id) => {
+  // Delete post
+  delete: async (id) => {
     const response = await api.delete(`/posts/${id}`);
-    return response.data;
-  },
-
-  // Add a comment to a post
-  addComment: async (postId, commentData) => {
-    const response = await api.post(`/posts/${postId}/comments`, commentData);
-    return response.data;
-  },
-
-  // Search posts
-  searchPosts: async (query) => {
-    const response = await api.get(`/posts/search?q=${query}`);
     return response.data;
   },
 };
 
-// Category API services
-export const categoryService = {
+// Categories API Methods
+export const categoriesApi = {
   // Get all categories
-  getAllCategories: async () => {
+  getAll: async () => {
     const response = await api.get('/categories');
     return response.data;
   },
 
-  // Create a new category
-  createCategory: async (categoryData) => {
+  // Create category
+  create: async (categoryData) => {
     const response = await api.post('/categories', categoryData);
     return response.data;
   },
 };
 
-// Auth API services
-export const authService = {
-  // Register a new user
-  register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
+// Health Check
+export const healthApi = {
+  check: async () => {
+    const response = await api.get('/health');
     return response.data;
-  },
-
-  // Login user
-  login: async (credentials) => {
-    const response = await api.post('/auth/login', credentials);
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-    }
-    return response.data;
-  },
-
-  // Logout user
-  logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  },
-
-  // Get current user
-  getCurrentUser: () => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
   },
 };
 
-export default api; 
+// Export default API instance
+export default api;

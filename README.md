@@ -1,78 +1,98 @@
-# MERN Stack Integration Assignment
+# 🚀 MERN Blog Application - Kenya Edition
 
-This assignment focuses on building a full-stack MERN (MongoDB, Express.js, React.js, Node.js) application that demonstrates seamless integration between front-end and back-end components.
+## 📱 Overview
 
-## Assignment Overview
+Full-stack MERN blog with **254 vibes**. React 18+, Node.js, Express, MongoDB. **Auto-populating edit forms**, **pagination**, **optimistic updates**, **20+ Kenyan categories** with trending posts.
 
-You will build a blog application with the following features:
-1. RESTful API with Express.js and MongoDB
-2. React front-end with component architecture
-3. Full CRUD functionality for blog posts
-4. User authentication and authorization
-5. Advanced features like image uploads and comments
+## ✨ Features
 
-## Project Structure
+- ✅ Full CRUD (Create, Read, Update, Delete)
+- ✅ **Pagination** (9 posts/page + page buttons)
+- ✅ **Auto-populate Edit** (form fills instantly)
+- ✅ 20 Kenyan categories (TECHNOLOGY, M-PESA, HUSTLE CULTURE...)
+- ✅ Trending posts (AI startups, Nyama Choma, Cybercrime laws)
+- ✅ Form validation (Yup + React Hook Form)
+- ✅ Responsive mobile-first UI
+- ✅ Optimistic updates + loading states
 
-```
-mern-blog/
-├── client/                 # React front-end
-│   ├── public/             # Static files
-│   ├── src/                # React source code
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── services/       # API services
-│   │   ├── context/        # React context providers
-│   │   └── App.jsx         # Main application component
-│   └── package.json        # Client dependencies
-├── server/                 # Express.js back-end
-│   ├── config/             # Configuration files
-│   ├── controllers/        # Route controllers
-│   ├── models/             # Mongoose models
-│   ├── routes/             # API routes
-│   ├── middleware/         # Custom middleware
-│   ├── utils/              # Utility functions
-│   ├── server.js           # Main server file
-│   └── package.json        # Server dependencies
-└── README.md               # Project documentation
+## 🛠️ Tech Stack
+
+Frontend: React 18+ | React Router | React Hook Form | Yup
+Backend: Node.js | Express | Mongoose | MongoDB
+
+
+## 🚀 Quick Setup
+
+```bash
+cd server && cp .env.example .env && npm i && npm run dev
+cd ../client && npm i && npm run dev
 ```
 
-## Getting Started
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Follow the setup instructions in the `Week4-Assignment.md` file
-4. Complete the tasks outlined in the assignment
+## 📡 API Endpoints
 
-## Files Included
+GET  /api/posts?page=1&limit=9     # Paginated posts
+GET  /api/posts/:id                # Single post
+POST /api/posts                    # Create
+PUT  /api/posts/:id                # Update
+DELETE /api/posts/:id              # Delete
+GET  /api/categories               # Categories
 
-- `Week4-Assignment.md`: Detailed assignment instructions
-- Starter code for both client and server:
-  - Basic project structure
-  - Configuration files
-  - Sample models and components
 
-## Requirements
+## 🌐 Routes
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
-- npm or yarn
-- Git
+* / - Home (posts + pagination)
+* /create - New post
+* /edit/:id - **Edit** (auto-fills)
+* /posts/:id - **Read** + Edit/Delete
 
-## Submission
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+## 🇰🇪 Sample Data
 
-1. Complete both the client and server portions of the application
-2. Implement all required API endpoints
-3. Create the necessary React components and hooks
-4. Document your API and setup process in the README.md
-5. Include screenshots of your working application
+**Categories:** TECHNOLOGY | M-PESA | HUSTLE CULTURE | KENYAN TECH
+**Posts:** "Kenya's Tech Boom" | "M-Pesa 1M Transactions"
 
-## Resources
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [Express.js Documentation](https://expressjs.com/)
-- [React Documentation](https://react.dev/)
-- [Node.js Documentation](https://nodejs.org/en/docs/)
-- [Mongoose Documentation](https://mongoosejs.com/docs/) 
+## 📱 Screenshots
+
+### HOME
+
+![1761230711903](image/README/1761230711903.png)
+
+### PAGINATION
+
+![1761231017294](image/README/1761231017294.png)
+
+### CREATE POST
+
+![1761231091176](image/README/1761231091176.png)
+
+### EDIT-AUTO-FILLED-POST
+
+![1761231165716](image/README/1761231165716.png)
+
+### READ POST
+
+![1761231253268](image/README/1761231253268.png)
+
+### MOBILE VIEW
+
+![1761231437122](image/README/1761231437122.png)
+
+## 🔧 .env Files
+
+**server/.env:**
+
+MONGO_URI=mongodb://localhost:27017/mern-blog
+PORT=5000
+
+client/.env:
+
+VITE_API_URL=http://localhost:5000/api
+
+## 🎯 Live Demo
+
+Frontend: http://localhost:5173
+Backend: http://localhost:5000/api
+
+## ⭐ Production ready! 254 Vibes 🇰🇪
